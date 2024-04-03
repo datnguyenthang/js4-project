@@ -3,16 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/firestore": "^4.5.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/dotenv": "^8.2.0",
     "@types/jest": "^27.5.2",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^16.18.94",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.23",
+    "babel-preset-es2015": "^6.24.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "firebase": "^10.10.0",
     "react": "^18.2.0",
+    "react-browser-router": "^2.1.2",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -39,5 +49,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "tailwindcss": "^3.4.3"
   }
 }
