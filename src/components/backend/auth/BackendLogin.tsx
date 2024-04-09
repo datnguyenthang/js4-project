@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as service from "../../../services";
 
@@ -22,6 +22,11 @@ const BackendLogin = () => {
             return;
         }
 
+        if (!user.active) {
+            setError('Your account has been inactive!'); // Fixed typo here
+            return;
+        }
+
         const payload = {
             name: user.name,
             email: user.email,
@@ -29,8 +34,16 @@ const BackendLogin = () => {
             username: user.username
         }
 
+// in case of exceed quota request in firebase
+/*
+const payload = {
+    name: 'admin',
+    email: 'admin@admin.com',
+    role: 'role',
+    username: 'admin'
+}
+*/
         localStorage.setItem('userLoginData', JSON.stringify(payload));
-
 
         // Redirect to admin dashboard
         navigate('/backend');

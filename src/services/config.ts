@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
 import { collection, addDoc } from 'firebase/firestore';
-import { findUserByUsername } from "./users/user";
+import { findUserByUsername } from "./users/user.service";
 import { hashPassword } from "./auth/authBackend";
 //import { seedDatabase } from "./seed.data";
 
@@ -35,8 +35,9 @@ export async function seedingAdminAccount(){
                 email: 'admin@admin.com',
                 name: 'Admin',
                 role: 'admin',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                active: true,
+                createdAt: new Date().toLocaleString(),
+                updatedAt: new Date().toLocaleString(),
             };
         const dbCollection = collection(db, 'users');
         await addDoc(dbCollection, data)
@@ -46,4 +47,4 @@ export async function seedingAdminAccount(){
             console.error("Error adding task:", error);
         });
 }
-
+//seedingAdminAccount();

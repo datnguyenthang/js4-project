@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { findUserByUsername } from '../users/user';
+import { findUserByUsername } from '../users/user.service';
 
 export const hashPassword = async (password: string): Promise<string> => {
     return bcrypt.hash(password, 10);
