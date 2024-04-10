@@ -21,6 +21,7 @@ const AddCategory = () => {
         setCategory(prevCategory => ({
             ...prevCategory,
             [name]: value,
+            tag: tags,
         }));
     };
 
