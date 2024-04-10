@@ -47,4 +47,4 @@ export async function seedingAdminAccount(){
             console.error("Error adding task:", error);
         });
 }
-//seedingAdminAccount();
+seedingAdminAccount();

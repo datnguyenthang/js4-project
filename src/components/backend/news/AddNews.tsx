@@ -6,8 +6,9 @@ import { TagsInput } from 'react-tag-input-component';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import FirebaseAdapter from './FirebaseAdapter';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { UserSessionContext } from '../hooks/UserContext';
+import { UserSessionContext } from '../../hooks/UserContext';
 import CategoryType from '@/src/services/categories/CategoryType';
+import { LoaderContext } from '../../hooks/LoaderContext';
 //import { Image, ImageCaption, ImageResize, ImageStyle, ImageToolbar } from '@ckeditor/ckeditor5-image';
 
 const AddNews = () => {
@@ -16,6 +17,8 @@ const AddNews = () => {
     const [shortContent, setShortContent] = useState('');
     const [content, setContent] = useState('');
     const [listCategory, setListCategory] = useState<CategoryType[]>([]);
+
+    const loadingContext = useContext(LoaderContext);
 
     //get name of user session
     const userContext = useContext(UserSessionContext);
@@ -32,12 +35,15 @@ const AddNews = () => {
     });
 
     useEffect(() => {
+        loadingContext.setIsLoader(true);
         const fetchData = async () => {
             try {
                 const getAllCategories= await service.getAllCategories();
                 setListCategory(getAllCategories);
             } catch (error) {
                 console.error("Error fetching category:", error);
+            } finally {
+                loadingContext.setIsLoader(false);
             }
         };
 

@@ -2,15 +2,28 @@ import { doc, updateDoc, addDoc, collection, query, where, getDocs, orderBy, get
 import NewsType from './NewsType';
 import { db } from '../config';
 
-// Function to update a news item by its ID
-export async function updateNews(newsId: string, updatedNews: Partial<NewsType>): Promise<boolean> {
+//get tags
+export async function scanTags(): Promise<string[]> {
     try {
-        const newsRef = doc(db, 'news', newsId);
-        await updateDoc(newsRef, updatedNews);
-        console.log(`News item with ID ${newsId} updated successfully.`);
-        return true;
+        const tags: string[] = [];
+        const newsCollectionRef = collection(db, 'news');
+        const querySnapshot = await getDocs(newsCollectionRef);
+
+        querySnapshot.forEach((doc) => {
+            const newsData = doc.data() as NewsType;
+
+            if (newsData.tag && Array.isArray(newsData.tag)) {
+                newsData.tag.forEach((tag) => {
+                    if (!tags.includes(tag)) {
+                        tags.push(tag);
+                    }
+                });
+            }
+        });
+
+        return tags;
     } catch (error) {
-        console.error(`Error updating news item with ID ${newsId}:`, error);
+        console.error('Error get tags:', error);
         throw error;
     }
 }
@@ -80,25 +93,6 @@ export async function getNewsById(newsId: string): Promise<NewsType | null> {
         }
     } catch (error) {
         console.error('Error getting news details by ID:', error);
-        throw error;
-    }
-}
-
-export async function getPublishedNewsByCreatedAt(): Promise<NewsType[]> {
-    try {
-        const newsCollection = collection(db, 'news');
-        const q = query(newsCollection, where('published', '==', true));
-        const querySnapshot = await getDocs(q);
-        const newsItems: NewsType[] = [];
-        querySnapshot.forEach((doc) => {
-            newsItems.push({
-                id: doc.id,
-                ...doc.data()
-            } as NewsType);
-        });
-        return newsItems;
-    } catch (error) {
-        console.error('Error getting published news by createdAt:', error);
         throw error;
     }
 }

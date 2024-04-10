@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
+import { LoaderContext } from '../../hooks/LoaderContext';
+import Loader from '../../utilities/loader/Loader';
 
 const Layout = () => {
+
+    const [isLoader, setIsLoader] = useState<boolean>(false);
+
     return (
-        <div>
-            <Header />
-                <Outlet />
-            <Footer />
-        </div>
+        <LoaderContext.Provider value={{ isLoader, setIsLoader }}>
+            {isLoader && <Loader />}
+            <div>
+                <Header />
+                    <Outlet />
+                <Footer />
+            </div>
+        </LoaderContext.Provider>
     );
 };
 

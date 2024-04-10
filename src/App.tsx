@@ -3,7 +3,7 @@ import { BrowserRouter as Routers, Route, Navigate, Routes, BrowserRouter } from
 import './App.css';
 import Dashboard from './components/backend/dashboard/Dashboard';
 import PageNotFound from './components/utilities/pagenotfound/PageNotFound';
-import HomePage from './components/frontend/layout/Home/HomePage';
+import HomePage from './components/frontend/Home/HomePage';
 import Layout from './components/frontend/layout/Layout';
 import BackendLayout from './components/backend/layout/BackendLayout';
 import BackendLogin from './components/backend/auth/BackendLogin';
@@ -13,7 +13,7 @@ import CategoryDashboard from './components/backend/categories/CategoryDashboard
 import AddCategory from './components/backend/categories/AddCategory';
 import NewsDashboard from './components/backend/news/NewsDashboard';
 import AddNews from './components/backend/news/AddNews';
-import News from './components/frontend/layout/News/News';
+import News from './components/frontend/News/News';
 
 //import dotenv from 'dotenv';
 //dotenv.config();

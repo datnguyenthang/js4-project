@@ -30,6 +30,8 @@ const AddUser = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
+        user.password = await service.hashPassword(user.password);
 
         service.addUser(user)
         .then(result => {

@@ -1,19 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as service from "../../../services";
 import CategoryType from '@/src/services/categories/CategoryType';
+import { LoaderContext } from '../../hooks/LoaderContext';
 
 const CategoryDashboard = () => {
 
     const [listCategory, setListCategory] = useState<CategoryType[]>([]);
+    const loadingContext = useContext(LoaderContext);
 
     useEffect(() => {
+        loadingContext.setIsLoader(true);
         const fetchData = async () => {
             try {
                 const getAllCategories= await service.getAllCategories();
                 setListCategory(getAllCategories);
             } catch (error) {
                 console.error("Error fetching category:", error);
+            } finally {
+                loadingContext.setIsLoader(false);
             }
         };
 
@@ -21,9 +26,11 @@ const CategoryDashboard = () => {
     }, []);
 
     const changeStatusCategory = async (categoryId: string, status: boolean) => {
+        loadingContext.setIsLoader(true);
         await service.updateCategoryStatus(categoryId, !status);
         const getAllCategories= await service.getAllCategories();
-        setListCategory(getAllCategories);  
+        setListCategory(getAllCategories);
+        loadingContext.setIsLoader(false);
     }
 
     return (

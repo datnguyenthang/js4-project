@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as service from "../../../services";
 import UserType from '@/src/services/users/UserType';
+import { LoaderContext } from '../../hooks/LoaderContext';
 
 const UserDashboard = () => {
 
     const [listUser, setListUser] = useState<UserType[]>([]);
+    const loadingContext = useContext(LoaderContext);
 
     useEffect(() => {
+        loadingContext.setIsLoader(true);
+
         const fetchData = async () => {
             try {
                 const getAllUsers = await service.getAllUsers();
@@ -15,6 +19,8 @@ const UserDashboard = () => {
             } catch (error) {
                 // Handle errors here
                 console.error("Error fetching users:", error);
+            } finally {
+                loadingContext.setIsLoader(false);
             }
         };
 
@@ -22,9 +28,11 @@ const UserDashboard = () => {
     }, []);
 
     const changeStatusUser = async (userId: string, status: boolean) => {
+        loadingContext.setIsLoader(true);
         await service.changeStatusActive(userId, !status);
         const updatedUsers = await service.getAllUsers();
-        setListUser(updatedUsers);  
+        setListUser(updatedUsers);
+        loadingContext.setIsLoader(false);  
     }
 
     return (
@@ -110,7 +118,9 @@ const UserDashboard = () => {
                             <button
                                 onClick={() => changeStatusUser(user?.id??'', user.active)}
                                 className={`w-12 h-6 p-0 m-auto rounded-full flex transition duration-500 shadow-2xl 
-                                            ${user.active ? 'focus:ring-2 focus:ring-green-800 justify-end bg-green-500' : 'focus:ring-2 focus:ring-red-800 justify-start bg-red-500'}`}
+                                            ${user.active ? 'focus:ring-2 focus:ring-green-800 justify-end ' : 'focus:ring-2 focus:ring-red-800 justify-start bg-red-500'}
+                                            ${user.role === 'admin' ? 'bg-gray-800' : 'bg-green-500'}`
+                                        }
                                 title={user.active ? 'InActive' : 'Active'}
                                 disabled={user.username === 'admin'}
                                 >

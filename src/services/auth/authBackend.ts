@@ -2,25 +2,37 @@ import bcrypt from 'bcryptjs';
 import { findUserByUsername } from '../users/user.service';
 
 export const hashPassword = async (password: string): Promise<string> => {
-    return bcrypt.hash(password, 10);
+    return await bcrypt.hash(password, 10);
 }
 
-export const checkPassword = async (authPassword: string, password: string) => {
-    //const hash = password.replace(/^\$2y(.+)$/i, '$2a$1');
-    const hash = await hashPassword(authPassword);
-    return await bcrypt.compare(authPassword, hash);
-}
-
-export const authBackend = async (username: string, password: string) => {
+export const checkPassword = async (inputPassword: string, password: string) => {
+    console.log(inputPassword);
     try {
-        if (!username || !password) return false;
+        console.log("Input Password:", inputPassword);
+        console.log("Stored Hashed Password:", password);
 
-        const user = await findUserByUsername(username);
+        // Compare the input password with the stored hashed password
+        const match = await bcrypt.compare(inputPassword, password);
+        console.log("Password Match:", match);
+
+        return match;
+    } catch (error) {
+        console.error("Error occurred while comparing passwords:", error);
+        return false; // Return false in case of error
+    }
+}
+
+export const authBackend = async (inputUsername: string, inputPassword: string) => {
+    try {
+        if (!inputUsername || !inputPassword) return false;
+
+        const user = await findUserByUsername(inputUsername);
+
         if (!user) {
             return false;
         }
 
-        const isMatchPassword = await checkPassword(password, user?.password);
+        const isMatchPassword = await checkPassword(inputPassword, user?.password);
         if (!isMatchPassword) return false;
 
         return user;

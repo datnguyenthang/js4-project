@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as service from "../../../../services";
 import CategoryType from '@/src/services/categories/CategoryType';
 
 const Header = () => {
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const [listCategory, setListCategory] = useState<CategoryType[]>([]);
 
     useEffect(() => {
@@ -24,12 +24,12 @@ const Header = () => {
         <div>
             <nav className="bg-white shadow fixed w-full top-0 z-50">
                 <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-                    <a className="text-xl font-semibold text-gray-800" href="/">
+                    <Link className="text-xl font-semibold text-gray-800" to="/">
                         <span className='text-green-800 text-2xl'>Instant News</span>
-                    </a>
+                    </Link>
                     <ul className="flex items-center space-x-4">
                         {listCategory.map((category: CategoryType, index) => (
-                            <Link key={index} to={`/${category.name}`} className="text-gray-500 hover:text-gray-600 font-bold text-xl">
+                            <Link key={index} to={`/?category=${category.name}`} className="text-green-500 hover:text-green-600 font-bold text-xl">
                                 <span>{category.name}</span>
                             </Link>
                         ))}

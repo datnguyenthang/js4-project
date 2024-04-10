@@ -1,19 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as service from "../../../services";
 import NewsType from '@/src/services/news/NewsType';
+import { LoaderContext } from '../../hooks/LoaderContext';
 
 const NewsDashboard = () => {
 
     const [listNews, setlistNews] = useState<NewsType[]>([]);
+    const loadingContext = useContext(LoaderContext);
 
     useEffect(() => {
+        loadingContext.setIsLoader(true);
         const fetchData = async () => {
             try {
                 const getAllNews= await service.getAllNews();
                 setlistNews(getAllNews);
             } catch (error) {
                 console.error("Error fetching category:", error);
+            } finally {
+                loadingContext.setIsLoader(false);
             }
         };
 
@@ -21,9 +26,11 @@ const NewsDashboard = () => {
     }, []);
 
     const changePublishNews = async (newId: string, status: boolean) => {
+        loadingContext.setIsLoader(true);
         await service.updateNewsStatus(newId, !status);
         const getAllNews= await service.getAllNews();
-        setlistNews(getAllNews);  
+        setlistNews(getAllNews);
+        loadingContext.setIsLoader(false);
     }
 
     return (

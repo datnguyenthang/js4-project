@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as service from "../../../services";
+import { LoaderContext } from '../../hooks/LoaderContext';
 
 const BackendLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const loadingContext = useContext(LoaderContext);
 
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        loadingContext.setIsLoader(true);
+
         if (!username || !password) {
             setError('Please enter both username and password.');
+            loadingContext.setIsLoader(false);
             return;
         }
 
@@ -19,11 +24,13 @@ const BackendLogin = () => {
 
         if (!user) {
             setError('Your username and password are incorrect.'); // Fixed typo here
+            loadingContext.setIsLoader(false);
             return;
         }
 
         if (!user.active) {
             setError('Your account has been inactive!'); // Fixed typo here
+            loadingContext.setIsLoader(false);
             return;
         }
 
@@ -45,6 +52,7 @@ const payload = {
 */
         localStorage.setItem('userLoginData', JSON.stringify(payload));
 
+        loadingContext.setIsLoader(false);
         // Redirect to admin dashboard
         navigate('/backend');
     };
@@ -52,6 +60,8 @@ const payload = {
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
             <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
+            <h5 className="text-sm font-bold mb-4">Admin user: admin/admin</h5>
+            <h5 className="text-sm font-bold mb-4">Creator user: creator/creator</h5>
             <input
                 type="text"
                 placeholder="Username"
