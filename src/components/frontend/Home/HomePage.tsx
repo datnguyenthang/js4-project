@@ -80,7 +80,7 @@ const HomePage = () => {
                                     <div className="article-meta flex items-center justify-between">
                                         <div className="flex items-center">
                                             <div>
-                                                <img src="https://avatar.iran.liara.run/public" alt="author's profile image" className="lazyautosizes ls-is-cached lazyloaded" sizes="32px"/>
+                                                <img src="https://i.pravatar.cc/300" alt="author's profile image" className="lazyautosizes ls-is-cached lazyloaded" sizes="32px"/>
                                             </div>
                                             <div className="ml-2 text-green-300 font-semibold"><span>{news.author}</span></div>
                                         </div>
