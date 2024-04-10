@@ -28,6 +28,9 @@ const Header = () => {
                         <span className='text-green-800 text-2xl'>Instant News</span>
                     </Link>
                     <ul className="flex items-center space-x-4">
+                        <Link to="/backend" className="text-green-600 hover:text-green-600 font-bold text-xl">
+                                <span>Sign in</span>
+                        </Link>
                         {listCategory.map((category: CategoryType, index) => (
                             <Link key={index} to={`/?category=${category.name}`} className="text-green-500 hover:text-green-600 font-bold text-xl">
                                 <span>{category.name}</span>
