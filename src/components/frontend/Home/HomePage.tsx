@@ -61,7 +61,7 @@ const HomePage = () => {
             <div className="banner bg-green-500 py-10 items-center justify-center">
                 <div className="container mx-auto text-center">
                     <h1 className="text-3xl font-semibold text-white">Instant News</h1>
-                    <p className="text-lg text-white">Bringing Breaking News to everyone</p>
+                    <p className="text-lg text-white">Bringing Breaking News to Everyone</p>
                 </div>
             </div>
             <div className="container mx-auto">
