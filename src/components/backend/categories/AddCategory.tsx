@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import * as service from "../../../services";
 import { useNavigate } from 'react-router-dom';
 import CategoryType from '@/src/services/categories/CategoryType';
-import { TagsInput } from 'react-tag-input-component';
 
 const AddCategory = () => {
     const navigate = useNavigate();
@@ -11,7 +10,6 @@ const AddCategory = () => {
     const [category, setCategory] = useState<CategoryType>({
         name: '',
         descryption: '',
-        tag: [],
         active: true,
     });
 
@@ -21,7 +19,6 @@ const AddCategory = () => {
         setCategory(prevCategory => ({
             ...prevCategory,
             [name]: value,
-            tag: tags,
         }));
     };
 
@@ -30,7 +27,6 @@ const AddCategory = () => {
 
         setCategory(prevCategory => ({
             ...prevCategory,
-            tag: tags
         }));
 
         service.addCategory(category)
@@ -54,20 +50,6 @@ const AddCategory = () => {
                 <div>
                     <label htmlFor="descryption" className="block text-sm font-medium text-gray-700">Descryption:</label>
                     <input type="text" id="descryption" name="descryption" value={category.descryption} required onChange={handleChange} className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300" />
-                </div>
-                <div>
-                    <label htmlFor="tag" className="block text-sm font-medium text-gray-700">Tag:</label>
-                    <TagsInput
-                        value={category.tag}
-                        onChange={
-                            async(tags: string[]) => {
-                                setTags(tags);
-                            }
-                        }
-                    
-                        name="tag"
-                        placeHolder="enter to add category tag"
-                    />
                 </div>
 
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">Add Category</button>

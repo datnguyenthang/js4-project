@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-import { LoaderContext } from '../../hooks/LoaderContext';
+import { LoaderContext } from '../../context/LoaderContext';
 import Loader from '../../utilities/loader/Loader';
 
 const Layout = () => {

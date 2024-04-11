@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as service from "../../../services";
 import UserType from '@/src/services/users/UserType';
-import { LoaderContext } from '../../hooks/LoaderContext';
+import { LoaderContext } from '../../context/LoaderContext';
 
 const UserDashboard = () => {
 

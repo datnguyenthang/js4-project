@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as service from "../../../services";
 import NewsType from '@/src/services/news/NewsType';
-import { LoaderContext } from '../../hooks/LoaderContext';
+import { LoaderContext } from '../../context/LoaderContext';
 
 const NewsDashboard = () => {
 
@@ -103,8 +103,13 @@ const NewsDashboard = () => {
                         </div>
 
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                            <p className="text-black dark:text-white">{news?.tag}</p>
+                            <ul className="right-0 mt-2">
+                                {  news?.tag?.map((tag, index) => (
+                                    <li key={index} className="text-gray bg-slate-300 rounded-xl border-1 text-xs py-1 px-2 whitespace-no-wrap mr-1 mb-2 inline-block">{tag}</li>
+                                ))}
+                            </ul>
                         </div>
+                        
 
                         <div className="flex items-center justify-center p-2.5 xl:p-5">
                             <p className="text-meta-3">{news?.author}</p>

@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BackendHeader from './header/BackendHeader';
 import BackendFooter from './footer/BackendFooter';
-import { UserSessionContext } from '../../hooks/UserContext';
-import { LoaderContext } from '../../hooks/LoaderContext';
+import { UserSessionContext } from '../../context/UserContext';
+import { LoaderContext } from '../../context/LoaderContext';
 import Loader from '../../utilities/loader/Loader';
 
 const BackendLayout = () => {

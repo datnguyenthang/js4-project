@@ -6,9 +6,9 @@ import { TagsInput } from 'react-tag-input-component';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import FirebaseAdapter from './FirebaseAdapter';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { UserSessionContext } from '../../hooks/UserContext';
+import { UserSessionContext } from '../../context/UserContext';
 import CategoryType from '@/src/services/categories/CategoryType';
-import { LoaderContext } from '../../hooks/LoaderContext';
+import { LoaderContext } from '../../context/LoaderContext';
 //import { Image, ImageCaption, ImageResize, ImageStyle, ImageToolbar } from '@ckeditor/ckeditor5-image';
 
 const AddNews = () => {
@@ -30,7 +30,7 @@ const AddNews = () => {
         content: content,
         author: user.name,
         category: '',
-        tag: [],
+        tag: tags,
         published: true,
     });
 
@@ -57,21 +57,24 @@ const AddNews = () => {
             [name]: value,
             shortContent: shortContent,
             content: content,
-            tag: tags,
         }));
+    };
+
+    const handleTagsChange = (newTags: string[]) => {
+        setTags(newTags);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setNews(prevNews => ({
-            ...prevNews,
+        const updatedNews = {
+            ...news,
             shortContent: shortContent,
             content: content,
             tag: tags,
-        }));
+        };
 
-        service.addNews(news)
+        service.addNews(updatedNews)
         .then(result => {
             if(result) navigate('/backend/news');
         })
@@ -168,11 +171,7 @@ const AddNews = () => {
                     <label htmlFor="tag" className="block text-sm font-medium text-gray-700">Tag:</label>
                     <TagsInput
                         value={news.tag}
-                        onChange={
-                            async(tags: string[]) => {
-                                await setTags(tags);
-                            }
-                        }
+                        onChange={handleTagsChange}
                         name="tag"
                         placeHolder="enter to add category tag"
                     />

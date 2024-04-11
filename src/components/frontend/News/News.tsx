@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import * as service from "../../../services";
 import { useNavigate, useParams } from 'react-router-dom';
 import NewsType from '@/src/services/news/NewsType';
-import { LoaderContext } from '../../hooks/LoaderContext';
+import { LoaderContext } from '../../context/LoaderContext';
 
 const News = () => {
     const navigate = useNavigate();

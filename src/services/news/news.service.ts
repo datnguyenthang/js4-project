@@ -5,9 +5,18 @@ import { db } from '../config';
 //get tags
 export async function scanTags(): Promise<string[]> {
     try {
+        const activeCategoriesSnapshot = await getDocs(query(collection(db, 'categories'), where('active', '==', true)));
+        const activeCategoryIds = activeCategoriesSnapshot.docs.map(doc => doc.data().name);
+
         const tags: string[] = [];
         const newsCollectionRef = collection(db, 'news');
-        const querySnapshot = await getDocs(newsCollectionRef);
+        const querySnapshot = await getDocs(
+            query(
+                newsCollectionRef,
+                where('published', '==', true),
+                where('category', 'in', activeCategoryIds)
+            )
+        );
 
         querySnapshot.forEach((doc) => {
             const newsData = doc.data() as NewsType;
@@ -57,7 +66,7 @@ export async function updateNewsStatus(newsId: string, publish: boolean): Promis
         throw error; 
     }
 }
-
+// show list news in backend dashboard
 export async function getAllNews(): Promise<NewsType[]> {
     try {
         const newsCollection = collection(db, 'news');
@@ -83,6 +92,17 @@ export async function getNewsById(newsId: string): Promise<NewsType | null> {
         const docSnap = await getDoc(newsDocRef);
 
         if (docSnap.exists()) {
+            const category = docSnap.data().category;
+            const activeCategoriesSnapshot = await getDocs(
+                    query(
+                        collection(db, 'categories'), 
+                        where('name', '==', category),
+                        where('active', '==', true),
+                    )
+                );
+
+            if(activeCategoriesSnapshot.docs[0].data().active === false) return null;
+
             return {
                 id: docSnap.id,
                 ...docSnap.data()
@@ -100,10 +120,15 @@ export async function getNewsById(newsId: string): Promise<NewsType | null> {
 // Function to get list of news based on category, publish, and createdAt
 export async function getPublishedNewsSortedByUpdatedAt(): Promise<NewsType[]> {
     try {
+        // Fetch active categories
+        const activeCategoriesSnapshot = await getDocs(query(collection(db, 'categories'), where('active', '==', true)));
+        const activeCategoryIds = activeCategoriesSnapshot.docs.map(doc => doc.data().name);
+
         const newsCollection = collection(db, 'news');
         const q = query(
             newsCollection,
             where('published', '==', true),
+            where('category', 'in', activeCategoryIds),
             //orderBy('updatedAt', 'desc')
         );
         const querySnapshot = await getDocs(q);

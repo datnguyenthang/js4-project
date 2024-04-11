@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserSessionContext } from "../../../hooks/UserContext";
+import { UserSessionContext } from "../../../context/UserContext";
 
 const DropdownUser = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
